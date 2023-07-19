@@ -15,13 +15,14 @@ public class CategoryService:ICategoryService
 
     public async Task<List<Category>> Get()
     {
+        Console.WriteLine("Ejecutando Get");
         var response = await _client.GetAsync("v1/categories");
         var content = await response.Content.ReadAsStringAsync();
 
         if(!response.IsSuccessStatusCode)
             throw new ApplicationException(content);
 
-        return await JsonSerializer.DeserializeAsync<List<Category>>(await response.Content.ReadAsStreamAsync());
+        return JsonSerializer.Deserialize<List<Category>>(content, _options);
     }
 
     public async Task Add(Category category)
