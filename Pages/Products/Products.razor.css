@@ -1,0 +1,12 @@
+.products-container{
+    display:grid;
+    grid-template-columns: repeat(auto-fill,250px);
+    grid-auto-rows: auto;
+    grid-gap:1rem;
+
+    
+}
+
+.products-container> .card > img > .card-img-top{
+    border-radius: 10px;
+}
