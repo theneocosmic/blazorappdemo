@@ -71,6 +71,8 @@ protected override async Task OnInitializedAsync()
                 CancelButtonText="No, cancel"
             });
 
+             
+
             if (!string.IsNullOrEmpty(result.Value))
             {
                 await _productService.Delete(product.Id);
