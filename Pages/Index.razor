@@ -1,13 +1,19 @@
 ﻿@page "/"
 @inject IConfiguration config;
+@inject SweetAlertService sweetAlertService;
 
 <PageTitle>Index</PageTitle>
 
 <ModuleTitle Title=@HelloMessage/>
 
-Welcome to your new app.
-
-<SurveyPrompt Title="How is Blazor working for you?" />
+Welcome to my Blazor Web App example.<br/>
+Basic example to connect Web API and Blazor. <br/>
+Fast way to create .Net Native Single Page Application<br/>
+This project contains a Basic CRUD.<br/>
+<br/>
+This project is complemented with:<br/>
+ -Blazored.Toast.Services<br/>
+ -CurrieTechnologies.Razor.SweetAlert2
 
 @code{
     public string HelloMessage  ="";

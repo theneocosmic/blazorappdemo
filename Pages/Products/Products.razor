@@ -2,12 +2,15 @@
 @inject ILogger<Products> logger;
 @inject IProductService _productService;
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime 
+@inject IToastService toastService
+@inject SweetAlertService Swal
 
 
 <PageTitle>Products</PageTitle>
 
 <ModuleTitle Title="Products"/>
-<button class="btn btn-dark mb-2" @onclick="@(()=>NavigationManager.NavigateTo("/addproduct"))">Add Product</button>
+<button title="Add Product" id="btn-add-product" class="btn mb-2" @onclick="@(()=>NavigationManager.NavigateTo("/addproduct"))">+</button>
 
 @if(products.Count() > 0){
     <div class="products-container">
@@ -21,6 +24,14 @@
                     </h4>
                     <p>@product.Price?.ToString("C")</p>
                 </div>
+                <div class="row">
+
+                <button title="Edit" class="btn btn-link col-lg-6 col-12" @onclick="@(() => EditProduct(product))">
+                    Edit <span class="oi oi-pencil"></span></button>
+                <button title="Delete" class="btn btn-link btn-delete btn-delete-product  col-lg-6 col-12" 
+                @onclick="@(() => DeleteProduct(product))"> Delete <span class="oi oi-trash"></span></button>
+                </div>
+
             </div> 
         }
     </div>
@@ -36,14 +47,44 @@ else{
 
 protected override async Task OnInitializedAsync()
 {
-     products = await GetProducts();
+     await GetProducts();
 }
   
     
-    private async Task<List<Product>> GetProducts()
+    private async Task GetProducts()
         {
-            return await _productService.Get();
+            products = await _productService.Get();
         }
+
+    private async Task EditProduct(Product product){
+            NavigationManager.NavigateTo($"/editproduct?Id={product.Id}");
+    }
+
+    private async Task DeleteProduct(Product product){
+
+            SweetAlertResult  result = await Swal.FireAsync(new SweetAlertOptions{
+                Title="Confirm",
+                Text=$"Are you sure you want to remove {product.Title}?",
+                Icon=SweetAlertIcon.Warning,
+                ShowCancelButton = true,
+                ConfirmButtonText = "Yes, I want",
+                CancelButtonText="No, cancel"
+            });
+
+            if (!string.IsNullOrEmpty(result.Value))
+            {
+                await _productService.Delete(product.Id);
+                toastService.ShowSuccess("Deleted Product");
+                await GetProducts();
+            }
+            else if (result.Dismiss == DismissReason.Cancel)
+            {
+                await Swal.FireAsync(
+                "Cancelled",
+                "Your product is safe :)",
+                SweetAlertIcon.Error
+            );
+            }
+            }
 }
 
-                    @* <button title="Eliminar" class="btn btn-danger btn-delete" @onclick="(()=> Delete(product))"><span class="oi oi-trash"></span></button> *@

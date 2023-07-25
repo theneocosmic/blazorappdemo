@@ -15,7 +15,6 @@ public class CategoryService:ICategoryService
 
     public async Task<List<Category>> Get()
     {
-        Console.WriteLine("Ejecutando Get");
         var response = await _client.GetAsync("v1/categories");
         var content = await response.Content.ReadAsStringAsync();
 

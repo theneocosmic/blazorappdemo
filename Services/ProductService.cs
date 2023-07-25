@@ -23,6 +23,16 @@ public class ProductService:IProductService
         return await JsonSerializer.DeserializeAsync<List<Product>>(await response.Content.ReadAsStreamAsync(),_options);
     }
 
+   public async Task<Product> GetById(int productId)
+    {
+        var response = await _client.GetAsync($"v1/products/{productId}");
+        var content = await response.Content.ReadAsStringAsync();
+        if(!response.IsSuccessStatusCode)
+            throw new ApplicationException(content);
+
+        return await JsonSerializer.DeserializeAsync<Product>(await response.Content.ReadAsStreamAsync(),_options);
+    }
+
     public async Task Add(Product product)
     {
         var response = await _client.PostAsync("v1/products", JsonContent.Create(product));
@@ -52,6 +62,8 @@ public class ProductService:IProductService
 public interface IProductService
 {
     Task<List<Product>> Get();
+    Task<Product> GetById(int productId);
     Task Add(Product product);
+    Task Update(int ProductId,Product product);
     Task Delete(int productId);
 }

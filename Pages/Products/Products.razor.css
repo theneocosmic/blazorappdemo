@@ -10,3 +10,25 @@
 .products-container> .card > img > .card-img-top{
     border-radius: 10px;
 }
+
+/* .products-container > .card> .card-body > .btn-delete-product{ */
+
+
+#btn-add-product{
+    color: #fff;
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+    height: 75px;
+    width: 75px;
+    border-radius: 50%;
+    position: fixed;
+    bottom: -3px;
+    right: 2px;
+    cursor:pointer;
+    z-index:999 !important;
+    font-size:2em;
+    }
+
+    #btn-add-product:hover{
+        background-color: #0069d9;
+    }
